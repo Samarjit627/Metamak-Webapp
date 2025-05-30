@@ -1,0 +1,48 @@
+{
+  "format": "layers-model",
+  "generatedBy": "tensorflow.js v4.17.0",
+  "convertedBy": "TensorFlow.js Converter v4.17.0",
+  "modelTopology": {
+    "class_name": "Sequential",
+    "config": {
+      "name": "manufacturing_analysis",
+      "layers": [
+        {
+          "class_name": "Dense",
+          "config": {
+            "units": 64,
+            "activation": "relu",
+            "input_shape": [10]
+          }
+        },
+        {
+          "class_name": "Dense",
+          "config": {
+            "units": 32,
+            "activation": "relu"
+          }
+        },
+        {
+          "class_name": "Dense",
+          "config": {
+            "units": 4,
+            "activation": "sigmoid"
+          }
+        }
+      ]
+    }
+  },
+  "weightsManifest": [
+    {
+      "paths": ["manufacturing-analysis.weights.bin"],
+      "weights": [
+        {"name": "dense_1/kernel", "shape": [10, 64], "dtype": "float32"},
+        {"name": "dense_1/bias", "shape": [64], "dtype": "float32"},
+        {"name": "dense_2/kernel", "shape": [64, 32], "dtype": "float32"},
+        {"name": "dense_2/bias", "shape": [32], "dtype": "float32"},
+        {"name": "dense_3/kernel", "shape": [32, 4], "dtype": "float32"},
+        {"name": "dense_3/bias", "shape": [4], "dtype": "float32"}
+      ]
+    }
+  ]
+}
