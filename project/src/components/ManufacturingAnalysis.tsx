@@ -43,6 +43,9 @@ import {
 } from 'lucide-react';
 import { PartAnalysisPanel } from './PartAnalysisPanel';
 import { processVideos } from '../data/processVideos';
+import ReactMarkdown from 'react-markdown';
+import axios from 'axios';
+import DFMGPTExplanation from './DFMGPTExplanation';
 
 ChartJS.register(
   CategoryScale,
@@ -156,71 +159,132 @@ export const ManufacturingAnalysis = () => {
     setIsAnalyzing(true);
     setError(null);
 
-    try {
-      if (!cadAnalysis) {
-        throw new Error('CAD analysis not available');
-      }
+    const fetchDFMAnalysis = async () => {
+      try {
+        if (!cadAnalysis) {
+          throw new Error('CAD analysis not available');
+        }
 
-      const processKey = material.toLowerCase() === 'metal' && quantity >= 1000 
-        ? 'die_casting'
-        : material.toLowerCase() === 'plastic' && quantity >= 1000
-        ? 'injection_molding'
-        : material.toLowerCase() === 'plastic' && quantity < 100
-        ? '3d_printing_fdm'
-        : 'cnc_metal';
+        const processKey = material.toLowerCase() === 'metal' && quantity >= 1000 
+          ? 'die_casting'
+          : material.toLowerCase() === 'plastic' && quantity >= 1000
+          ? 'injection_molding'
+          : material.toLowerCase() === 'plastic' && quantity < 100
+          ? '3d_printing_fdm'
+          : 'cnc_metal';
 
-      const costEstimate = dualModeCostEstimatorV3({
-        processKey,
-        quantity,
-        volumeCm3: cadAnalysis.volume,
-        material
-      });
-
-      const updatedAnalyses = selectedParts.map(part => {
-        const analysis = analyzePart(
-          part,
+        const costEstimate = dualModeCostEstimatorV3({
+          processKey,
           quantity,
-          material,
-          materialSubtype,
-          grade
-        );
+          volumeCm3: cadAnalysis.volume,
+          material
+        });
 
-        return {
-          ...analysis,
-          recommendedProcesses: analysis.recommendedProcesses.map(process => ({
-            ...process,
-            // estimatedCost is already set by analyzePart using the new cost logic
-            locationFactors: getLocationCostFactors(selectedCity)
-          })),
-          dualCostEstimate: costEstimate
-        };
-      });
+        // If on analysis tab and at least one part, call backend for DFM summary
+        if (activeTab === 'analysis' && selectedParts.length > 0) {
+          // For now, only analyze the first selected part
+          const part = selectedParts[0];
+          // Use part.geometry or fallback to cadAnalysis.geometry
+          const geometry = part.geometry || cadAnalysis.geometry;
+          const processType = processKey;
 
-      setAnalyses(updatedAnalyses);
-      setError(null);
+          // Serialize geometry for backend
+          let serializedGeometry = null;
+          try {
+            // Dynamically import to avoid circular deps
+            const { serializeGeometry } = await import('../utils/geometrySerialization');
+            serializedGeometry = serializeGeometry(geometry);
+            if (!serializedGeometry || !serializedGeometry.positions || !serializedGeometry.indices) {
+              if (typeof window !== 'undefined' && (window.DEBUG_DFM || process.env.NODE_ENV === 'development')) {
+                console.error('[DFM DEBUG] Geometry serialization failed: missing positions or indices', serializedGeometry);
+              }
+            } else {
+              if (typeof window !== 'undefined' && (window.DEBUG_DFM || process.env.NODE_ENV === 'development')) {
+                console.log('[DFM DEBUG] Serialized geometry:', {
+                  positions: serializedGeometry.positions.slice(0, 30), // log first 30
+                  indices: serializedGeometry.indices.slice(0, 30),
+                  positionsLength: serializedGeometry.positions.length,
+                  indicesLength: serializedGeometry.indices.length
+                });
+              }
+            }
+          } catch (e) {
+            if (typeof window !== 'undefined' && (window.DEBUG_DFM || process.env.NODE_ENV === 'development')) {
+              console.error('[DFM DEBUG] Error during geometry serialization:', e);
+            }
+          }
 
-      // Update BOM items
-      const newBomItems = updatedAnalyses.map(analysis => ({
-        partId: analysis.id,
-        name: analysis.name || 'Unnamed Part',
-        quantity,
-        material: getMaterialLabel(material, materialSubtype),
-        materialSubtype,
-        materialGrade: grade,
-        process: analysis.recommendedProcesses?.[0]?.name || 'Undefined',
-        estimatedCost: analysis.dualCostEstimate?.totalCost || 0,
-        notes: `Complexity: ${(analysis.complexity || 0).toFixed(2)}`,
-        location: selectedCity
-      }));
+          // Log API payload
+          if (typeof window !== 'undefined' && (window.DEBUG_DFM || process.env.NODE_ENV === 'development')) {
+            console.log('[DFM DEBUG] API Payload:', {
+              part_geometry: serializedGeometry,
+              process_type: processType
+            });
+          }
+          try {
+            const response = await axios.post('/api/dfm/analysis', {
+              part_geometry: serializedGeometry,
+              process_type: processType
+            });
+            const dfmResult = response.data;
+            setAnalyses([{ ...dfmResult, dualCostEstimate: costEstimate }]);
+          } catch (apiError) {
+            console.error('Error fetching DFM summary from backend:', apiError);
+            setError('Failed to fetch DFM summary from backend.');
+            setAnalyses([]);
+          }
+        } else {
+          // Local analysis for other tabs
+          const updatedAnalyses = selectedParts.map(part => {
+            const analysis = analyzePart(
+              part,
+              quantity,
+              material,
+              materialSubtype,
+              grade
+            );
 
-      setBomItems(newBomItems);
-    } catch (error) {
-      console.error('Error in manufacturing analysis:', error);
-      setError('Failed to analyze manufacturing parameters. Please try again.');
-    } finally {
-      setIsAnalyzing(false);
-    }
-  }, [selectedParts, quantity, material, materialSubtype, grade, selectedCity, cadAnalysis, setBomItems, modelFile, fileType]);
+            return {
+              ...analysis,
+              recommendedProcesses: analysis.recommendedProcesses.map(process => ({
+                ...process,
+                locationFactors: getLocationCostFactors(selectedCity)
+              })),
+              dualCostEstimate: costEstimate
+            };
+          });
+          setAnalyses(updatedAnalyses);
+        }
+
+        setError(null);
+
+        // Update BOM items (from local analysis for now)
+        const newBomItems = selectedParts.map((part, idx) => {
+          const analysis = (activeTab === 'analysis' && analyses[0]) ? analyses[0] : (analyses[idx] || {});
+          return {
+            partId: analysis.id || part.id,
+            name: analysis.name || part.name || 'Unnamed Part',
+            quantity,
+            material: getMaterialLabel(material, materialSubtype),
+            materialSubtype,
+            materialGrade: grade,
+            process: analysis.recommendedProcesses?.[0]?.name || 'Undefined',
+            estimatedCost: analysis.dualCostEstimate?.totalCost || 0,
+            notes: `Complexity: ${(analysis.complexity || 0).toFixed(2)}`,
+            location: selectedCity
+          };
+        });
+        setBomItems(newBomItems);
+      } catch (error) {
+        console.error('Error in manufacturing analysis:', error);
+        setError('Failed to analyze manufacturing parameters. Please try again.');
+      } finally {
+        setIsAnalyzing(false);
+      }
+    };
+
+    fetchDFMAnalysis();
+  }, [selectedParts, quantity, material, materialSubtype, grade, selectedCity, cadAnalysis, setBomItems, modelFile, fileType, activeTab]);
 
   const chartData = {
     labels: analyses.map(a => a.name || 'Unnamed Part'),
@@ -651,39 +715,33 @@ export const ManufacturingAnalysis = () => {
                           </div>
                         </div>
                       )}
+                      <>
+                        <div className="text-sm mt-3">
+                          <div className="text-gray-600 mb-1">Advantages:</div>
+                          <ul className="list-disc list-inside text-gray-800">
+                            {process.advantages?.map((adv, i) => (
+                              <li key={i}>{adv}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </>
 
-                      <div className="text-sm mt-3">
-                        <div className="text-gray-600 mb-1">Advantages:</div>
-                        <ul className="list-disc list-inside text-gray-800">
-                          {process.advantages?.map((adv, i) => (
-                            <li key={i}>{adv}</li>
-                          ))}
-                        </ul>
-                      </div>
                     </div>
-                  ))}
-                </div>
-              ))}
+                <>
+                  <div className="text-sm mt-3">
+                    <div className="text-gray-600 mb-1">Advantages:</div>
+                    <ul className="list-disc list-inside text-gray-800">
+                      {process.advantages?.map((adv, i) => (
+                        <li key={i}>{adv}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
 
-              {activeTab === 'costs' && analyses.length > 0 && analyses[0].dualCostEstimate && (
-                <CostAnalysisPanel
-                  estimate={analyses[0].dualCostEstimate}
-                  quantity={quantity}
-                  material={getMaterialLabel(material, materialSubtype)}
-                  process={analyses[0].recommendedProcesses?.[0]?.name || 'Standard Process'}
-                  currency={currency}
-                />
-              )}
-
-              {activeTab === 'analysis' && (
-                <PartAnalysisPanel analyses={analyses} />
-              )}
-
-              {activeTab === 'overview' && analyses.length > 0 && (
-                <div className="bg-white rounded-lg shadow p-4 border border-gray-200">
-                  <Bar data={chartData} options={chartOptions} />
-                </div>
-              )}
+              </div>
+            ))}
+          </div>
+        ))}
             </div>
           )}
         </div>

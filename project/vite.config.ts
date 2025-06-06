@@ -37,6 +37,11 @@ export default defineConfig({
             console.error('Proxy error:', err);
           });
         }
+      },
+      '/api': {
+        target: 'http://localhost:58059',
+        changeOrigin: true,
+        secure: false
       }
     }
   },

@@ -10,6 +10,7 @@ import { useThemeStore } from './store/themeStore';
 import { ModelErrorBoundary } from './components/ErrorBoundary';
 import { ChatButton } from './components/ChatButton';
 import { ChatInterface } from './components/ChatInterface';
+import ChatWithTrust from './components/ChatWithTrust';
 
 import { useDFMUIStore } from './store/dfmUIStore';
 import DFMHeatmapModal from './components/DFMHeatmapModal';
@@ -61,7 +62,8 @@ function App() {
   </button>
 </div>
             <div className="flex-1 overflow-y-auto">
-              <ChatInterface isOpen={isChatOpen} />
+              {/* <ChatInterface isOpen={isChatOpen} /> */}
+              <ChatWithTrust />
             </div>
           </div>
         )}

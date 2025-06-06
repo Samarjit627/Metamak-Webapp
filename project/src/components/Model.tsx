@@ -25,8 +25,7 @@ import { loadSTEPFile } from '../utils/stepLoader';
 import { analyzeGeometry } from '../utils/geometryAnalysis';
 import { calculateVolumeAndSurfaceAreaFromMesh } from '../utils/geometryAnalysis';
 import { analyzeDFMRisksPerFace } from '../functions/dfmRiskFunctions';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
+
 
 // --- Utility: Per-Face DFM Risk Calculation ---
 function calculateDFMRisksPerFace(geometry: THREE.BufferGeometry): { faceIndex: number, type: string, riskScore: number }[] {
@@ -393,6 +392,10 @@ const STEPModel: React.FC<STEPModelProps> = ({ file, setError, onProgress }) => 
       mesh.scale.setScalar(scale);
       mesh.position.copy(center).multiplyScalar(-scale);
       mesh.position.y += size.y * scale / 2;
+
+      import('../store/modelStore').then(({ useModelStore }) => {
+        useModelStore.getState().setGeometry(mesh.geometry);
+      });
     }
   }, [mesh, material, heatmapEnabled]);
 
@@ -434,38 +437,35 @@ const STEPModel: React.FC<STEPModelProps> = ({ file, setError, onProgress }) => 
         <>
           <primitive object={mesh} />
           {tooltipPos && hoveredRisk && (
-            <Tippy
-              content={
-                <div style={{ minWidth: 180 }}>
-                  <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
-                  {hoveredRisk.thickness && (
-                    <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
-                  )}
-                  {hoveredRisk.recommendation && (
-                    <div>Recommendation: {hoveredRisk.recommendation}</div>
-                  )}
-                  {hoveredRisk.impact && (
-                    <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
-                  )}
-                </div>
-              }
-              visible={true}
-              interactive={false}
-              placement="right"
-              getReferenceClientRect={() => ({
-                width: 0,
-                height: 0,
-                top: tooltipPos.y,
-                left: tooltipPos.x,
-                bottom: tooltipPos.y,
-                right: tooltipPos.x,
-                x: tooltipPos.x,
-                y: tooltipPos.y,
-                toJSON: () => ''
-              })}
-            >
-              <div />
-            </Tippy>
+            <Html fullscreen style={{ pointerEvents: 'none' }}>
+              <div
+                style={{
+                  position: 'fixed',
+                  left: tooltipPos.x,
+                  top: tooltipPos.y,
+                  minWidth: 180,
+                  pointerEvents: 'auto',
+                  zIndex: 1000,
+                  background: 'rgba(255,255,255,0.97)',
+                  borderRadius: 8,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+                  padding: 12,
+                  color: '#222',
+                  fontSize: 14
+                }}
+              >
+                <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
+                {hoveredRisk.thickness && (
+                  <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
+                )}
+                {hoveredRisk.recommendation && (
+                  <div>Recommendation: {hoveredRisk.recommendation}</div>
+                )}
+                {hoveredRisk.impact && (
+                  <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
+                )}
+              </div>
+            </Html>
           )}
         </>
       ) : null}
@@ -800,38 +800,35 @@ const OBJModel = ({ url, setError, onProgress }: ModelComponentProps) => {
           {console.log('Rendering Model primitive:', model)}
           <primitive object={model} />
           {tooltipPos && hoveredRisk && (
-            <Tippy
-              content={
-                <div style={{ minWidth: 180 }}>
-                  <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
-                  {hoveredRisk.thickness && (
-                    <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
-                  )}
-                  {hoveredRisk.recommendation && (
-                    <div>Recommendation: {hoveredRisk.recommendation}</div>
-                  )}
-                  {hoveredRisk.impact && (
-                    <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
-                  )}
-                </div>
-              }
-              visible={true}
-              interactive={false}
-              placement="right"
-              getReferenceClientRect={() => ({
-                width: 0,
-                height: 0,
-                top: tooltipPos.y,
-                left: tooltipPos.x,
-                bottom: tooltipPos.y,
-                right: tooltipPos.x,
-                x: tooltipPos.x,
-                y: tooltipPos.y,
-                toJSON: () => ''
-              })}
-            >
-              <div />
-            </Tippy>
+            <Html fullscreen style={{ pointerEvents: 'none' }}>
+              <div
+                style={{
+                  position: 'fixed',
+                  left: tooltipPos.x,
+                  top: tooltipPos.y,
+                  minWidth: 180,
+                  pointerEvents: 'auto',
+                  zIndex: 1000,
+                  background: 'rgba(255,255,255,0.97)',
+                  borderRadius: 8,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+                  padding: 12,
+                  color: '#222',
+                  fontSize: 14
+                }}
+              >
+                <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
+                {hoveredRisk.thickness && (
+                  <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
+                )}
+                {hoveredRisk.recommendation && (
+                  <div>Recommendation: {hoveredRisk.recommendation}</div>
+                )}
+                {hoveredRisk.impact && (
+                  <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
+                )}
+              </div>
+            </Html>
           )}
         </>
       ) : null}
@@ -1001,38 +998,35 @@ const STLModel = ({ url, setError, onProgress }: ModelComponentProps) => {
             {console.log('Rendering Model primitive:', mesh)}
             <primitive object={mesh} />
             {tooltipPos && hoveredRisk && (
-              <Tippy
-                content={
-                  <div style={{ minWidth: 180 }}>
-                    <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
-                    {hoveredRisk.thickness && (
-                      <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
-                    )}
-                    {hoveredRisk.recommendation && (
-                      <div>Recommendation: {hoveredRisk.recommendation}</div>
-                    )}
-                    {hoveredRisk.impact && (
-                      <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
-                    )}
-                  </div>
-                }
-                visible={true}
-                interactive={false}
-                placement="right"
-                getReferenceClientRect={() => ({
-                  width: 0,
-                  height: 0,
-                  top: tooltipPos.y,
-                  left: tooltipPos.x,
-                  bottom: tooltipPos.y,
-                  right: tooltipPos.x,
-                  x: tooltipPos.x,
-                  y: tooltipPos.y,
-                  toJSON: () => ''
-                })}
-              >
-                <div />
-              </Tippy>
+              <Html fullscreen style={{ pointerEvents: 'none' }}>
+                <div
+                  style={{
+                    position: 'fixed',
+                    left: tooltipPos.x,
+                    top: tooltipPos.y,
+                    minWidth: 180,
+                    pointerEvents: 'auto',
+                    zIndex: 1000,
+                    background: 'rgba(255,255,255,0.97)',
+                    borderRadius: 8,
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+                    padding: 12,
+                    color: '#222',
+                    fontSize: 14
+                  }}
+                >
+                  <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
+                  {hoveredRisk.thickness && (
+                    <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
+                  )}
+                  {hoveredRisk.recommendation && (
+                    <div>Recommendation: {hoveredRisk.recommendation}</div>
+                  )}
+                  {hoveredRisk.impact && (
+                    <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
+                  )}
+                </div>
+              </Html>
             )}
           </>
         ) : null}
@@ -1317,38 +1311,35 @@ const DXFModel = ({ url, setError, onProgress }: ModelComponentProps) => {
           {console.log('Rendering Model primitive:', model)}
           <primitive object={model} />
           {tooltipPos && hoveredRisk && (
-            <Tippy
-              content={
-                <div style={{ minWidth: 180 }}>
-                  <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
-                  {hoveredRisk.thickness && (
-                    <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
-                  )}
-                  {hoveredRisk.recommendation && (
-                    <div>Recommendation: {hoveredRisk.recommendation}</div>
-                  )}
-                  {hoveredRisk.impact && (
-                    <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
-                  )}
-                </div>
-              }
-              visible={true}
-              interactive={false}
-              placement="right"
-              getReferenceClientRect={() => ({
-                width: 0,
-                height: 0,
-                top: tooltipPos.y,
-                left: tooltipPos.x,
-                bottom: tooltipPos.y,
-                right: tooltipPos.x,
-                x: tooltipPos.x,
-                y: tooltipPos.y,
-                toJSON: () => ''
-              })}
-            >
-              <div />
-            </Tippy>
+            <Html fullscreen style={{ pointerEvents: 'none' }}>
+              <div
+                style={{
+                  position: 'fixed',
+                  left: tooltipPos.x,
+                  top: tooltipPos.y,
+                  minWidth: 180,
+                  pointerEvents: 'auto',
+                  zIndex: 1000,
+                  background: 'rgba(255,255,255,0.97)',
+                  borderRadius: 8,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+                  padding: 12,
+                  color: '#222',
+                  fontSize: 14
+                }}
+              >
+                <div className="font-semibold text-red-700">❗ {hoveredRisk.type.replace('_', ' ').toUpperCase()}</div>
+                {hoveredRisk.thickness && (
+                  <div>Thickness: {hoveredRisk.thickness.toFixed(2)}mm</div>
+                )}
+                {hoveredRisk.recommendation && (
+                  <div>Recommendation: {hoveredRisk.recommendation}</div>
+                )}
+                {hoveredRisk.impact && (
+                  <div>Impact: <span className="font-bold">{hoveredRisk.impact}</span></div>
+                )}
+              </div>
+            </Html>
           )}
         </>
       ) : null}
