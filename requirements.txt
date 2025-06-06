@@ -1,0 +1,4 @@
+fastapi
+uvicorn
+pydantic
+# gpt_functions (local package for GPT-based utilities)

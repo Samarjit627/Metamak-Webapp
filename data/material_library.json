@@ -1,0 +1,263 @@
+[
+  {
+    "name": "ABS",
+    "type": "plastic",
+    "processes": ["Injection Molding", "FDM"],
+    "properties": ["impact resistant", "moderate heat resistance", "affordable"],
+    "suitable_for": ["indoor parts", "casings", "medium load"],
+    "not_suitable_for": ["UV exposure", "high-temperature"],
+    "min_wall_thickness_mm": 1.2,
+    "min_draft_angle_deg": 0.5
+  },
+  {
+    "name": "Polypropylene (PP)",
+    "type": "plastic",
+    "processes": ["Injection Molding", "Thermoforming"],
+    "properties": ["chemical resistant", "flexible", "low density"],
+    "suitable_for": ["containers", "hinges", "packaging"],
+    "not_suitable_for": ["structural load", "UV exposure"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 1.0
+  },
+  {
+    "name": "Nylon 66",
+    "type": "plastic",
+    "processes": ["Injection Molding", "SLS"],
+    "properties": ["self-lubricating", "abrasion-resistant", "strong"],
+    "suitable_for": ["gears", "bushings", "wear parts"],
+    "not_suitable_for": ["wet environments", "high UV"],
+    "min_wall_thickness_mm": 1.0,
+    "min_draft_angle_deg": 0.75
+  },
+  {
+    "name": "Aluminum 6061",
+    "type": "metal",
+    "processes": ["CNC Machining", "Die Casting"],
+    "properties": ["lightweight", "corrosion resistant", "strong"],
+    "suitable_for": ["enclosures", "brackets", "outdoor use"],
+    "not_suitable_for": ["elastic components", "flexible joints"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 1.0
+  },
+  {
+    "name": "Mild Steel",
+    "type": "metal",
+    "processes": ["CNC", "Sheet Metal", "Laser Cutting"],
+    "properties": ["rigid", "ductile", "low cost"],
+    "suitable_for": ["frames", "structural parts", "welded assemblies"],
+    "not_suitable_for": ["corrosive environments"],
+    "min_wall_thickness_mm": 1.2,
+    "min_draft_angle_deg": 0.5
+  },
+  {
+    "name": "PLA",
+    "type": "plastic",
+    "processes": ["FDM"],
+    "properties": ["biodegradable", "easy to print"],
+    "suitable_for": ["prototypes", "indoor parts"],
+    "not_suitable_for": ["high temperature", "mechanical stress"],
+    "min_wall_thickness_mm": 0.8,
+    "min_draft_angle_deg": 0.3
+  },
+  {
+    "name": "Polycarbonate (PC)",
+    "type": "plastic",
+    "processes": ["Injection Molding"],
+    "properties": ["impact resistant", "transparent", "rigid"],
+    "suitable_for": ["lenses", "covers", "protective gear"],
+    "not_suitable_for": ["UV long-term exposure", "cost-sensitive parts"],
+    "min_wall_thickness_mm": 1.0,
+    "min_draft_angle_deg": 0.5
+  },
+  {
+    "name": "Stainless Steel 304",
+    "type": "metal",
+    "processes": ["CNC", "Sheet Metal", "Laser Cutting"],
+    "properties": ["corrosion resistant", "strong", "non-magnetic"],
+    "suitable_for": ["medical", "kitchen", "outdoor"],
+    "not_suitable_for": ["high thermal conductivity needs"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 0.75
+  },
+  {
+    "name": "PETG",
+    "type": "plastic",
+    "processes": ["FDM", "Vacuum Forming"],
+    "properties": ["tough", "semi-flexible", "moisture resistant"],
+    "suitable_for": ["bottles", "functional prototypes"],
+    "not_suitable_for": ["high-precision parts"],
+    "min_wall_thickness_mm": 1.0,
+    "min_draft_angle_deg": 0.75
+  },
+  {
+    "name": "HDPE",
+    "type": "plastic",
+    "processes": ["Injection Molding", "Blow Molding"],
+    "properties": ["lightweight", "chemical resistant", "low cost"],
+    "suitable_for": ["containers", "piping", "insulation"],
+    "not_suitable_for": ["tight tolerances", "load-bearing"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 1.0
+  },
+  {
+    "name": "Rubber (EPDM)",
+    "type": "rubber",
+    "processes": ["Compression Molding"],
+    "properties": ["flexible", "weather resistant", "durable"],
+    "suitable_for": ["gaskets", "seals", "outdoor parts"],
+    "not_suitable_for": ["rigid components"],
+    "min_wall_thickness_mm": 2.0,
+    "min_draft_angle_deg": 2.0
+  },
+  {
+    "name": "Wood (Pine)",
+    "type": "wood",
+    "processes": ["CNC Routing", "Turning"],
+    "properties": ["lightweight", "low cost", "easy to shape"],
+    "suitable_for": ["furniture", "mockups", "decor"],
+    "not_suitable_for": ["load-bearing precision parts"],
+    "min_wall_thickness_mm": 3.0,
+    "min_draft_angle_deg": 0.5
+  },
+  {
+    "name": "Delrin (POM)",
+    "type": "plastic",
+    "processes": ["CNC Machining", "Injection Molding"],
+    "properties": ["low friction", "high stiffness", "wear resistant"],
+    "suitable_for": ["gears", "bearings", "mechanical linkages"],
+    "not_suitable_for": ["UV exposure", "very high heat"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 1.0
+  },
+  {
+    "name": "TPU",
+    "type": "plastic",
+    "processes": ["FDM", "Injection Molding"],
+    "properties": ["flexible", "abrasion resistant", "elastic"],
+    "suitable_for": ["wearables", "gaskets", "bumpers"],
+    "not_suitable_for": ["rigid applications", "tight tolerances"],
+    "min_wall_thickness_mm": 2.0,
+    "min_draft_angle_deg": 1.5
+  },
+  {
+    "name": "UHMWPE",
+    "type": "plastic",
+    "processes": ["CNC Machining"],
+    "properties": ["extremely wear resistant", "low friction", "impact resistant"],
+    "suitable_for": ["slides", "conveyors", "marine parts"],
+    "not_suitable_for": ["tight tolerances", "bonding"],
+    "min_wall_thickness_mm": 2.0,
+    "min_draft_angle_deg": 1.5
+  },
+  {
+    "name": "FR4 (Glass Epoxy)",
+    "type": "composite",
+    "processes": ["CNC", "Laser Cutting"],
+    "properties": ["flame retardant", "rigid", "insulating"],
+    "suitable_for": ["PCBs", "electrical enclosures"],
+    "not_suitable_for": ["impact loads", "flexing"],
+    "min_wall_thickness_mm": 1.6,
+    "min_draft_angle_deg": 0.75
+  },
+  {
+    "name": "Carbon Fiber Sheet",
+    "type": "composite",
+    "processes": ["Waterjet Cutting", "CNC"],
+    "properties": ["lightweight", "stiff", "aesthetic"],
+    "suitable_for": ["drone frames", "aerospace panels"],
+    "not_suitable_for": ["complex internal features", "elastic zones"],
+    "min_wall_thickness_mm": 1.0,
+    "min_draft_angle_deg": 0.5
+  },
+  {
+    "name": "Brass",
+    "type": "metal",
+    "processes": ["CNC Machining", "Turning"],
+    "properties": ["decorative", "corrosion resistant", "machinable"],
+    "suitable_for": ["fittings", "jewelry", "electrical terminals"],
+    "not_suitable_for": ["structural loads", "welding"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 0.75
+  },
+  {
+    "name": "Copper",
+    "type": "metal",
+    "processes": ["CNC", "Stamping"],
+    "properties": ["electrically conductive", "soft", "ductile"],
+    "suitable_for": ["bus bars", "RF shielding", "contacts"],
+    "not_suitable_for": ["precision threads", "long unsupported spans"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 0.75
+  },
+  {
+    "name": "Titanium",
+    "type": "metal",
+    "processes": ["CNC", "3D Printing"],
+    "properties": ["high strength", "corrosion resistant", "light"],
+    "suitable_for": ["implants", "aerospace", "sports gear"],
+    "not_suitable_for": ["low-cost applications"],
+    "min_wall_thickness_mm": 1.2,
+    "min_draft_angle_deg": 0.75
+  },
+  {
+    "name": "Silicone Rubber",
+    "type": "rubber",
+    "processes": ["Compression Molding", "Injection Molding"],
+    "properties": ["heat resistant", "flexible", "non-toxic"],
+    "suitable_for": ["seals", "medical devices", "molds"],
+    "not_suitable_for": ["abrasive wear"],
+    "min_wall_thickness_mm": 2.5,
+    "min_draft_angle_deg": 2.0
+  },
+  {
+    "name": "Nitrile Rubber (NBR)",
+    "type": "rubber",
+    "processes": ["Compression Molding"],
+    "properties": ["oil resistant", "durable", "flexible"],
+    "suitable_for": ["automotive seals", "hoses", "O-rings"],
+    "not_suitable_for": ["outdoor UV exposure"],
+    "min_wall_thickness_mm": 2.0,
+    "min_draft_angle_deg": 2.0
+  },
+  {
+    "name": "Acrylic (PMMA)",
+    "type": "plastic",
+    "processes": ["Laser Cutting", "CNC", "Injection Molding"],
+    "properties": ["transparent", "UV stable", "rigid"],
+    "suitable_for": ["signage", "windows", "displays"],
+    "not_suitable_for": ["impact loads"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 1.0
+  },
+  {
+    "name": "Teflon (PTFE)",
+    "type": "plastic",
+    "processes": ["CNC", "Compression Molding"],
+    "properties": ["non-stick", "chemical resistant", "slippery"],
+    "suitable_for": ["gaskets", "chemical liners", "bearings"],
+    "not_suitable_for": ["adhesive bonding", "load bearing"],
+    "min_wall_thickness_mm": 1.5,
+    "min_draft_angle_deg": 1.5
+  },
+  {
+    "name": "MDF",
+    "type": "wood",
+    "processes": ["CNC Routing", "Laser Cutting"],
+    "properties": ["smooth", "stable", "affordable"],
+    "suitable_for": ["prototypes", "fixtures", "flat panels"],
+    "not_suitable_for": ["wet conditions", "load bearing"],
+    "min_wall_thickness_mm": 3.0,
+    "min_draft_angle_deg": 0.5
+  },
+  {
+    "name": "Plywood",
+    "type": "wood",
+    "processes": ["Laser Cutting", "CNC Routing"],
+    "properties": ["strong", "multi-layered", "cost-effective"],
+    "suitable_for": ["furniture", "frames", "mockups"],
+    "not_suitable_for": ["tight tolerances"],
+    "min_wall_thickness_mm": 3.0,
+    "min_draft_angle_deg": 0.5
+  }
+]
+

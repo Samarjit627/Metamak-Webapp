@@ -1,0 +1,38 @@
+def get_all_vendors():
+    # This simulates a DB query or external API fetch
+    return [
+        {
+            "vendor_id": "v001",
+            "name": "Shree Plastics",
+            "city": "Pune",
+            "tier": 1,
+            "processes": ["Injection Molding", "Overmolding"],
+            "materials": ["ABS", "PP", "HDPE"],
+            "certifications": ["ISO 9001"],
+            "min_order_qty": 500,
+            "contact": "shreeplastics@example.com"
+        },
+        {
+            "vendor_id": "v002",
+            "name": "Rajkot Precision CNC",
+            "city": "Rajkot",
+            "tier": 2,
+            "processes": ["CNC Machining", "Turning"],
+            "materials": ["Aluminum", "Mild Steel"],
+            "certifications": ["ISO 9001", "AS9100"],
+            "min_order_qty": 10,
+            "contact": "cnc.rajkot@example.com"
+        },
+        {
+            "vendor_id": "v003",
+            "name": "Chennai 3D Works",
+            "city": "Chennai",
+            "tier": 1,
+            "processes": ["FDM", "SLA"],
+            "materials": ["PLA", "PETG", "Resin"],
+            "certifications": [],
+            "min_order_qty": 1,
+            "contact": "3dworks@example.com"
+        }
+        # Add more vendors as needed...
+    ]

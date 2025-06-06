@@ -1,0 +1,51 @@
+{
+  "test_part": {
+    "part_id": "test_part",
+    "filename": "part1.stl",
+    "uploaded_at": "2025-05-23 12:36:00",
+    "design_intent": {
+      "use_case": "prototype",
+      "environment": "lab",
+      "production_scale": "low",
+      "load_condition": "static",
+      "finish_requirement": "matte"
+    },
+    "selected_material": "PLA",
+    "selected_process": "FDM",
+    "quantity": 1,
+    "dfm_issues": [],
+    "chat_history": [],
+    "memory_log": [
+      {
+        "timestamp": "2025-05-23 07:07:20.013753",
+        "action": "DFM Check",
+        "detail": "Checked for manufacturability issues."
+      }
+    ]
+  },
+  "dummy-part-001": {
+    "part_id": "dummy-part-001",
+    "filename": "handlebar_mount_v2.step",
+    "uploaded_at": "2025-05-23 12:00:00+00:00",
+    "design_intent": {
+      "use_case": "mounting handlebar to frame",
+      "environment": "outdoor urban roads",
+      "production_scale": "mass production",
+      "load_condition": "medium load",
+      "finish_requirement": "matte black powder coat"
+    },
+    "selected_material": "Aluminum 6061",
+    "selected_process": "CNC Machining",
+    "quantity": 1000,
+    "dfm_issues": [
+      {
+        "issue_type": "Thin Wall",
+        "description": "Wall thickness below 1mm near mounting point",
+        "severity": "high",
+        "suggested_fix": "Increase to at least 1.5mm"
+      }
+    ],
+    "chat_history": [],
+    "memory_log": []
+  }
+}
