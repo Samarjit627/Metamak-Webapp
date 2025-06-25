@@ -715,7 +715,6 @@ export const ManufacturingAnalysis = () => {
                           </div>
                         </div>
                       )}
-                      <>
                         <div className="text-sm mt-3">
                           <div className="text-gray-600 mb-1">Advantages:</div>
                           <ul className="list-disc list-inside text-gray-800">
@@ -724,19 +723,6 @@ export const ManufacturingAnalysis = () => {
                             ))}
                           </ul>
                         </div>
-                      </>
-
-                    </div>
-                <>
-                  <div className="text-sm mt-3">
-                    <div className="text-gray-600 mb-1">Advantages:</div>
-                    <ul className="list-disc list-inside text-gray-800">
-                      {process.advantages?.map((adv, i) => (
-                        <li key={i}>{adv}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </>
 
               </div>
             ))}

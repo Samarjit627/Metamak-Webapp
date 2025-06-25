@@ -1,16 +1,16 @@
 import React, { useState, useEffect, Suspense } from 'react';
-import { HybridChatInterface } from './chat/HybridChatInterface';
+
 import { Viewer3D } from './components/Viewer3D';
 import { TopNavbar } from './components/TopNavbar';
 import { ManufacturingAnalysis } from './components/ManufacturingAnalysis';
 import { BottomToolbar } from './components/BottomToolbar';
 import { BOMSidebar } from './components/BOMSidebar';
-import { useModelStore } from './store/modelStore';
+
 import { useThemeStore } from './store/themeStore';
 import { ModelErrorBoundary } from './components/ErrorBoundary';
 import { ChatButton } from './components/ChatButton';
 import { ChatInterface } from './components/ChatInterface';
-import ChatWithTrust from './components/ChatWithTrust';
+
 
 import { useDFMUIStore } from './store/dfmUIStore';
 import DFMHeatmapModal from './components/DFMHeatmapModal';
@@ -62,8 +62,7 @@ function App() {
   </button>
 </div>
             <div className="flex-1 overflow-y-auto">
-              {/* <ChatInterface isOpen={isChatOpen} /> */}
-              <ChatWithTrust />
+              <ChatInterface isOpen={isChatOpen} />
             </div>
           </div>
         )}
